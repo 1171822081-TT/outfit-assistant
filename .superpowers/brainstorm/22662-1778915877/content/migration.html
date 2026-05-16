@@ -1,0 +1,80 @@
+<h2>从路线 A 迁移到路线 B 的难度</h2>
+<p class="subtitle">React SPA → Next.js + PWA，到底要改多少？</p>
+
+<div class="section">
+  <h3>一句话结论：低到中等难度，不伤筋动骨</h3>
+  <p>Next.js 本身就是基于 React 的，你的组件代码 90% 不用改。迁移更像是"换个壳"而非"重写"。</p>
+</div>
+
+<div class="section">
+  <h3>迁移要动的东西</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:14px;">
+    <tr style="background:#1a1a2e; color:#e0e0e0;">
+      <th style="padding:10px; text-align:left;">模块</th>
+      <th style="padding:10px; text-align:left;">路线 A</th>
+      <th style="padding:10px; text-align:left;">路线 B</th>
+      <th style="padding:10px; text-align:center;">改动量</th>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">UI 组件</td>
+      <td style="padding:10px;">React 组件</td>
+      <td style="padding:10px;">完全复用</td>
+      <td style="padding:10px; text-align:center; color:#4ade80;">零改动</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">Supabase 调用</td>
+      <td style="padding:10px;">@supabase/supabase-js</td>
+      <td style="padding:10px;">完全复用</td>
+      <td style="padding:10px; text-align:center; color:#4ade80;">零改动</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">天气 API</td>
+      <td style="padding:10px;">fetch 调用</td>
+      <td style="padding:10px;">完全复用</td>
+      <td style="padding:10px; text-align:center; color:#4ade80;">零改动</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">路由</td>
+      <td style="padding:10px;">react-router</td>
+      <td style="padding:10px;">Next.js 文件路由</td>
+      <td style="padding:10px; text-align:center; color:#fbbf24;">中</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">入口文件</td>
+      <td style="padding:10px;">Vite / CRA 配置</td>
+      <td style="padding:10px;">next.config.js</td>
+      <td style="padding:10px; text-align:center; color:#fbbf24;">中</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">PWA 能力</td>
+      <td style="padding:10px;">无</td>
+      <td style="padding:10px;">新增 manifest + Service Worker</td>
+      <td style="padding:10px; text-align:center; color:#fbbf24;">新增</td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <div class="mockup">
+    <div class="mockup-header">迁移路径：3 步走，不影响使用</div>
+    <div class="mockup-body" style="text-align:left; padding:16px;">
+      <div style="font-size:14px; line-height:2;">
+        <strong>第 1 步：创建 Next.js 项目，搬组件</strong><br>
+        <span style="color:#888;">把路线 A 的 React 组件原样搬进 Next.js 的 app/ 目录，路由改成文件夹结构。Supabase 调用和天气 API 代码不变。</span><br><br>
+        <strong>第 2 步：加 PWA 能力</strong><br>
+        <span style="color:#888;">安装 next-pwa 插件，配置 manifest.json（图标、名称、主题色），设置缓存策略（天气数据缓存 1 小时，衣柜数据实时）。</span><br><br>
+        <strong>第 3 步：替换部署</strong><br>
+        <span style="color:#888;">Vercel 上新建项目关联新仓库，DNS 切过来。旧版本留着当回退。</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>估算</h3>
+  <p>AI 辅助下，整个迁移大约 <strong>2-4 天</strong>。主要是路由重组的体力活，没有技术难点。</p>
+</div>
+
+<div style="margin-top:24px; padding:16px; background:#1e3a2f; border-radius:8px;">
+  <p style="margin:0;"><strong>建议：放心选 A，先跑起来。</strong> 路线 A 到 B 的过渡很平滑——代码复用率 90%，迁移成本低。先用 A 让女朋友用上，体验反馈有了再决定要不要做 PWA。</p>
+</div>

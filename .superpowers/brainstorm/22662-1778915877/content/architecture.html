@@ -1,0 +1,89 @@
+<h2>第 1 节：架构与技术栈</h2>
+<p class="subtitle">路线 A — 零后端代码，全BaaS驱动</p>
+
+<div class="section">
+  <h3>系统全景</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:20px; border-radius:8px; font-size:14px; line-height:1.8; font-family:monospace;">
+    ┌──────────────────────────────────────────┐<br>
+    │&nbsp;&nbsp;Vercel 托管（自动部署）&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+    │&nbsp;&nbsp;┌────────────────────────────────────┐&nbsp;&nbsp;│<br>
+    │&nbsp;&nbsp;│&nbsp;&nbsp;React SPA (Vite + TypeScript)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;│<br>
+    │&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;┌──────┐ ┌──────┐ ┌──────────┐ │&nbsp;&nbsp;│<br>
+    │&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;│天气卡&nbsp;│ │衣柜页&nbsp;│ │2D模特页&nbsp;&nbsp;│ │&nbsp;&nbsp;│<br>
+    │&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;└──────┘ └──────┘ └──────────┘ │&nbsp;&nbsp;│<br>
+    │&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;┌────────┐ ┌─────────────┐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;│<br>
+    │&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;│搭配推荐│ │图片自动处理&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;│<br>
+    │&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;└────────┘ └─────────────┘&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;│<br>
+    │&nbsp;&nbsp;└───────────┬────────────────────────┘&nbsp;&nbsp;│<br>
+    └──────────────────┼──────────────────────────┘<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;┌─────────┼─────────┐<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;▼&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br>
+    ┌──────────┐ ┌──────────┐ ┌──────────┐<br>
+    │&nbsp;Supabase&nbsp;│ │和风天气API│ │@imgly/&nbsp;&nbsp;&nbsp;│<br>
+    │DB+存储+API│ │每日1000次│ │bg-removal│<br>
+    │&nbsp;&nbsp;免费&nbsp;&nbsp;&nbsp;&nbsp;│ │&nbsp;&nbsp;免费&nbsp;&nbsp;&nbsp;&nbsp;│ │浏览器端抠图│<br>
+    └──────────┘ └──────────┘ └──────────┘
+  </div>
+</div>
+
+<div class="section">
+  <h3>技术选型清单</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:14px;">
+    <tr style="background:#1a1a2e; color:#e0e0e0;">
+      <th style="padding:10px; text-align:left;">层</th>
+      <th style="padding:10px; text-align:left;">选型</th>
+      <th style="padding:10px; text-align:left;">理由</th>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">前端框架</td>
+      <td style="padding:10px;">React 18 + Vite + TypeScript</td>
+      <td style="padding:10px;">文档最丰富，AI 生成代码质量最高</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">样式</td>
+      <td style="padding:10px;">Tailwind CSS</td>
+      <td style="padding:10px;">响应式简单，手机适配方便</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">路由</td>
+      <td style="padding:10px;">React Router v6</td>
+      <td style="padding:10px;">三个 Tab 切换，够用且简单</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">数据库</td>
+      <td style="padding:10px;">Supabase (PostgreSQL)</td>
+      <td style="padding:10px;">自带 REST API + 图片存储，零后端</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">2D 模特</td>
+      <td style="padding:10px;">HTML5 Canvas</td>
+      <td style="padding:10px;">图层叠加，代码量小</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">图片处理</td>
+      <td style="padding:10px;">@imgly/background-removal</td>
+      <td style="padding:10px;">浏览器端 AI 抠图，无需服务器</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">天气</td>
+      <td style="padding:10px;">和风天气 API (前端直调)</td>
+      <td style="padding:10px;">免费 1000次/天，仅需 API Key</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">部署</td>
+      <td style="padding:10px;">Vercel (关联 GitHub)</td>
+      <td style="padding:10px;">免费，push 代码自动部署</td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>与原需求文档的关键差异</h3>
+  <div style="font-size:14px; line-height:1.8;">
+    <p>原文档提到了 Node.js/Python 后端 → <strong style="color:#4ade80;">取消</strong>，全部用 Supabase BaaS 替代</p>
+    <p>原文档提到了 Three.js → <strong style="color:#4ade80;">MVP 不用</strong>，改用 Canvas 2D 图层叠加</p>
+    <p>原文档提到了 Ant Design → <strong style="color:#4ade80;">换成 Tailwind CSS</strong>，移动端响应式更灵活</p>
+    <p>新增 <strong style="color:#4ade80;">@imgly/background-removal</strong> 用于电商图片自动去背景</p>
+  </div>
+</div>

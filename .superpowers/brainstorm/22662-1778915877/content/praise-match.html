@@ -1,0 +1,79 @@
+<h2>多标签匹配逻辑：吊带 + 裙子为例</h2>
+<p class="subtitle">一个搭配命中多个特征时，夸赞怎么选？</p>
+
+<div class="section">
+  <h3>匹配流程</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:16px; border-radius:8px; font-size:14px; line-height:2;">
+    <strong>搭配：白色吊带 + 碎花长裙</strong><br>
+    <span style="color:#888;">→ 汇总特征标签：{"露肩", "裙子", "甜美"}</span><br><br>
+
+    <strong>Step 1 — 从夸赞库中筛选命中标签的：</strong><br>
+    <table style="width:100%; border-collapse:collapse; font-size:13px; margin-top:8px;">
+      <tr style="color:#888;">
+        <th style="padding:6px; text-align:left;">夸赞内容</th>
+        <th style="padding:6px; text-align:left;">标签</th>
+        <th style="padding:6px; text-align:center;">命中？</th>
+      </tr>
+      <tr style="border-bottom:1px solid #333;">
+        <td style="padding:6px;">"锁骨线条就是你天生的配饰"</td>
+        <td style="padding:6px; color:#888;">{"露肩"}</td>
+        <td style="padding:6px; text-align:center; color:#4ade80;">✓</td>
+      </tr>
+      <tr style="border-bottom:1px solid #333;">
+        <td style="padding:6px;">"这条裙子简直为你量身定做"</td>
+        <td style="padding:6px; color:#888;">{"裙子", "甜美"}</td>
+        <td style="padding:6px; text-align:center; color:#4ade80;">✓</td>
+      </tr>
+      <tr style="border-bottom:1px solid #333;">
+        <td style="padding:6px;">"温柔到想让全世界保护你"</td>
+        <td style="padding:6px; color:#888;">{"甜美"}</td>
+        <td style="padding:6px; text-align:center; color:#4ade80;">✓</td>
+      </tr>
+      <tr style="border-bottom:1px solid #333;">
+        <td style="padding:6px; color:#666;">"今天的气场两米八"</td>
+        <td style="padding:6px; color:#888;">{"酷飒"}</td>
+        <td style="padding:6px; text-align:center; color:#f87171;">✗</td>
+      </tr>
+      <tr>
+        <td style="padding:6px; color:#666;">"运动风都能穿出超模感"</td>
+        <td style="padding:6px; color:#888;">{"运动"}</td>
+        <td style="padding:6px; text-align:center; color:#f87171;">✗</td>
+      </tr>
+    </table>
+    <br>
+    <strong>Step 2 — 命中 3 条，有两条路可选：</strong>
+  </div>
+</div>
+
+<div class="section">
+  <div class="split">
+    <div class="mockup">
+      <div class="mockup-header">方案：随机选一条</div>
+      <div class="mockup-body" style="padding:12px; font-size:14px; line-height:1.8;">
+        <p>从命中的 3 条中随机抽 1 条</p>
+        <p style="color:#4ade80;">优点：简单，每次打开都有新鲜感</p>
+        <p style="color:#fbbf24;">缺点：吊带+裙子可能夸到锁骨，但这是合理的（因为确实露锁骨了）</p>
+        <p style="margin-top:8px; font-size:13px; color:#888;">结果示例：<br>"锁骨线条就是你天生的配饰"</p>
+      </div>
+    </div>
+    <div class="mockup">
+      <div class="mockup-header">方案：按命中数优先</div>
+      <div class="mockup-body" style="padding:12px; font-size:14px; line-height:1.8;">
+        <p>优先选命中标签最多的夸赞</p>
+        <p style="color:#4ade80;">优点：最精准，匹配度最高</p>
+        <p style="color:#fbbf24;">缺点：容易老选同一条，缺少变化</p>
+        <p style="margin-top:8px; font-size:13px; color:#888;">结果示例：<br>"这条裙子简直为你量身定做" ← 命中裙子+甜美两个标签</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>我的建议：方案一，随机选</h3>
+  <p style="font-size:14px; line-height:1.8;">
+    理由很直接：<strong>命中"露肩"的夸赞，说明搭配确实露了肩，夸锁骨是合理的。</strong>只要标签匹配硬约束成立，就不会出现"穿高领夸锁骨"的答非所问。随机选反而让每次打开都有惊喜——今天夸裙子、明天夸锁骨、后天夸气质。
+  </p>
+  <p style="font-size:13px; color:#888;">
+    技术上：<code>WHERE tags && outfit_tags</code>（PostgreSQL 数组交集），或前端用 <code>Set.has()</code> 判断。命中多条就随机抽。足够。
+  </p>
+</div>

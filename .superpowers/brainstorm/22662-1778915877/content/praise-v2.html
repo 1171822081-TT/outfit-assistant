@@ -1,0 +1,93 @@
+<h2>夸赞逻辑改进：与当前搭配联动</h2>
+<p class="subtitle">夸赞内容根据模特身上展示的搭配特征动态匹配，不尬夸</p>
+
+<div class="section">
+  <h3>匹配规则</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:14px;">
+    <tr style="background:#1a1a2e; color:#e0e0e0;">
+      <th style="padding:10px; text-align:left;">搭配特征</th>
+      <th style="padding:10px; text-align:left;">触发条件</th>
+      <th style="padding:10px; text-align:left;">夸赞方向</th>
+      <th style="padding:10px; text-align:left;">示例</th>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">露肩/吊带/抹胸</td>
+      <td style="padding:10px;">上衣为吊带、一字肩、抹胸类</td>
+      <td style="padding:10px;">锁骨、肩颈</td>
+      <td style="padding:10px; font-size:13px;">"锁骨线条就是你天生的配饰"</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">裙子/连衣裙</td>
+      <td style="padding:10px;">下装为短裙/长裙，或穿连衣裙</td>
+      <td style="padding:10px;">腰线、腿型、气质</td>
+      <td style="padding:10px; font-size:13px;">"这条裙子简直为你量身定做"</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">运动风</td>
+      <td style="padding:10px;">搭配整体风格为 sport</td>
+      <td style="padding:10px;">活力、身材线条</td>
+      <td style="padding:10px; font-size:13px;">"运动风都能穿出超模感，服了"</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">通勤/正式</td>
+      <td style="padding:10px;">搭配整体风格为 office</td>
+      <td style="padding:10px;">气场、品味、干练</td>
+      <td style="padding:10px; font-size:13px;">"这一身开会，同事以为空降了新总监"</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">甜美/温柔</td>
+      <td style="padding:10px;">搭配整体风格为 sweet/gentle</td>
+      <td style="padding:10px;">笑容、温柔、亲和力</td>
+      <td style="padding:10px; font-size:13px;">"温柔到想让全世界保护你"</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">酷飒</td>
+      <td style="padding:10px;">搭配整体风格为 cool</td>
+      <td style="padding:10px;">气场、自信、酷感</td>
+      <td style="padding:10px; font-size:13px;">"今天的气场两米八，走路都带BGM"</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">无匹配</td>
+      <td style="padding:10px;">没有特定特征命中</td>
+      <td style="padding:10px;">品味、眼光</td>
+      <td style="padding:10px; font-size:13px;">"会挑衣服的女孩，运气不会太差"</td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>匹配逻辑流程</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:16px; border-radius:8px; font-size:13px; line-height:1.8;">
+    1. 拿到当前展示的搭配 outfit<br>
+    2. 取出搭配中所有衣物，汇总特征：<br>
+    &nbsp;&nbsp;&nbsp;<span style="color:#888;">子类标签 (吊带/裙子/卫衣/…) + 风格标签 (sport/office/…)</span><br>
+    3. 从 compliments 表中筛选匹配标签的夸赞<br>
+    4. 命中多条 → 随机选一条<br>
+    5. 命中 0 条 → 使用"无匹配"通用夸赞<br>
+    6. 同一天不重复（仍用 localStorage 记录）
+  </div>
+</div>
+
+<div class="section">
+  <h3>数据表更新</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:12px; border-radius:8px; font-size:13px; font-family:monospace; line-height:1.6;">
+    compliments<br>
+    ├── id (PK)<br>
+    ├── text&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(TEXT, 30字限制)<br>
+    ├── tags&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(TEXT[], 匹配标签数组)<br>
+    │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如：{"dress", "sweet"} 或 {"cool", "top"}<br>
+    ├── is_fallback&nbsp;&nbsp;&nbsp;(BOOLEAN, 是否为通用夸赞)<br>
+    └── created_at<br><br>
+    <span style="color:#888;">tags 可选值（与搭配标签一致）：<br>
+    &nbsp;&nbsp;露肩 / 裙子 / 运动 / 通勤 / 甜美 / 酷飒 / 温柔 / 通用</span>
+  </div>
+</div>
+
+<div class="section">
+  <h3>切换搭配时夸赞也联动更新</h3>
+  <p style="font-size:14px;">用户左右滑动切换搭配 1/2/3 → PraiseBanner 内容随之切换。每次看到新搭配，夸赞都是针对这套搭配的，不会出现"看卫衣搭配时夸锁骨"的违和感。</p>
+</div>
+
+<div style="margin-top:16px; padding:16px; background:#1e3a2f; border-radius:8px; font-size:14px;">
+  <p style="margin:0;"><strong>总结：</strong>夸赞不是随机的，而是跟着搭配走的。露肩才夸锁骨，裙子才夸腰线，运动才夸活力。搭配切换，夸赞也切。</p>
+</div>

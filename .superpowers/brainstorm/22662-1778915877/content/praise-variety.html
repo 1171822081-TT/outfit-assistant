@@ -1,0 +1,80 @@
+<h2>夸赞多样化策略</h2>
+<p class="subtitle">每个标签多条夸赞 + 近期不重复 = 不觉得假</p>
+
+<div class="section">
+  <h3>核心要求</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:16px; border-radius:8px; font-size:14px; line-height:1.8;">
+    <strong>每个标签至少 8-10 条夸赞</strong>，同类搭配每次打开看到的不一样。<br>
+    通过 <strong>localStorage 记录最近 10 条已展示的夸赞</strong>，选择时排除。
+  </div>
+</div>
+
+<div class="section">
+  <h3>标签 → 夸赞池示例</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:13px;">
+    <tr style="background:#1a1a2e; color:#e0e0e0;">
+      <th style="padding:10px; text-align:left; width:15%;">标签</th>
+      <th style="padding:10px; text-align:left;">夸赞池（至少 8 条）</th>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px; vertical-align:top;">露肩</td>
+      <td style="padding:10px; font-size:12px; line-height:2;">
+        1. "锁骨线条就是你天生的配饰"<br>
+        2. "直角肩加天鹅颈，穿什么都高级"<br>
+        3. "这个肩颈比例，不去当模特太可惜了"<br>
+        4. "你穿露肩，比秀场模特还好看"<br>
+        5. "肩膀线条这么好看，就该多露出来"<br>
+        6. "你锁骨能养鱼这句话终于找到主人了"<br>
+        7. "这肩膀不演古装剧太浪费了"<br>
+        8. "你穿吊带，是吊带的荣幸"
+      </td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px; vertical-align:top;">裙子</td>
+      <td style="padding:10px; font-size:12px; line-height:2;">
+        1. "这条裙子遇到你才叫物尽其用"<br>
+        2. "裙子很美，但主要是人好看"<br>
+        3. "这种裙型专治腿长焦虑——你穿刚好"<br>
+        4. "转个圈，裙摆和心情一起飞起来"<br>
+        5. "你配裙子，不是裙子配你"<br>
+        6. "这条裙子的人设就是被你穿"<br>
+        7. "穿裙子的女孩运气不会差，但你靠的是身材"<br>
+        8. "别人穿裙子是打扮，你穿裙子是作品"
+      </td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px; vertical-align:top;">通勤</td>
+      <td style="padding:10px; font-size:12px; line-height:2;">
+        1. "这一身开会，同事以为空降了新总监"<br>
+        2. "办公室最美实习生就是你，虽然你是正式员工"<br>
+        3. "知性又干练，你的职场形象管理是满分"<br>
+        4. "专业感和时尚感居然可以同时在线"<br>
+        5. "这气场，提案还没开始就已经赢了"<br>
+        6. "你的通勤穿搭，建议公司写进员工手册"<br>
+        7. "又美又飒，今天的会议室是你的主场"<br>
+        8. "有一种美叫看起来年薪百万"
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>选择逻辑（最终版）</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:16px; border-radius:8px; font-size:13px; line-height:1.8;">
+    1. 拿到搭配标签 → {"露肩", "裙子"}<br>
+    2. 从夸赞库筛选命中标签的 → 16 条候选（露肩 8 条 + 裙子 8 条）<br>
+    3. 排除 localStorage 中最近 10 条已展示的<br>
+    4. 剩余候选随机选一条<br>
+    5. 如果全部被排除了（极端情况），重置历史，从头开始<br>
+    6. 将选中记录写入 localStorage 展示历史<br><br>
+
+    <strong>结果：</strong>今天穿吊带夸锁骨，明天换裙子夸腰线，后天再穿吊带夸另一个角度的锁骨——<strong>不会重复同一句话。</strong>
+  </div>
+</div>
+
+<div class="section">
+  <h3>关于文案录入</h3>
+  <p style="font-size:14px; line-height:1.8;">
+    MVP 阶段你手动录入，建议每个标签准备 <strong>8-10 条</strong>。7 个标签（露肩/裙子/运动/通勤/甜美/酷飒/温柔）加上 5 条通用兜底夸赞，总共约 <strong>60-80 条</strong>。后续产品化阶段可接入 AI 自动生成。
+  </p>
+</div>

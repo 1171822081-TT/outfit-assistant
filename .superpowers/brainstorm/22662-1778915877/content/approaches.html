@@ -1,0 +1,70 @@
+<h2>两种技术路线对比</h2>
+<p class="subtitle">根据你的情况：零基础 + AI辅助 + 手机为主 + 先2D再3D + 可能产品化</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">路线 A：React SPA + Supabase BaaS</div>
+    <div class="mockup-body" style="text-align:left; padding:16px;">
+      <p><strong>结构：</strong></p>
+      <div style="background:#1a1a2e; color:#e0e0e0; padding:12px; border-radius:8px; font-size:13px; line-height:1.6;">
+        手机浏览器<br>
+        &nbsp;&nbsp;↓<br>
+        Vercel 托管的 React SPA<br>
+        &nbsp;&nbsp;↓ 直接调用<br>
+        Supabase（数据库 + 图片存储 + API）<br>
+        &nbsp;&nbsp;↓<br>
+        和风天气 API
+      </div>
+      <div style="margin-top:12px;">
+        <span class="label">特点</span>
+        <ul style="font-size:14px; padding-left:18px;">
+          <li>零后端代码，Supabase 自带 REST API</li>
+          <li>Vercel 一键部署，改代码即上线</li>
+          <li>响应式布局，浏览器打开就能用</li>
+          <li>不能离线使用，弱网体验一般</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">路线 B：Next.js + PWA + Supabase</div>
+    <div class="mockup-body" style="text-align:left; padding:16px;">
+      <p><strong>结构：</strong></p>
+      <div style="background:#1a1a2e; color:#e0e0e0; padding:12px; border-radius:8px; font-size:13px; line-height:1.6;">
+        手机主屏幕图标（PWA）<br>
+        &nbsp;&nbsp;↓<br>
+        Vercel 托管的 Next.js<br>
+        &nbsp;&nbsp;↓<br>
+        Supabase + Service Worker 缓存<br>
+        &nbsp;&nbsp;↓<br>
+        和风天气 API
+      </div>
+      <div style="margin-top:12px;">
+        <span class="label">特点</span>
+        <ul style="font-size:14px; padding-left:18px;">
+          <li>可添加到手机主屏幕，像原生 App</li>
+          <li>离线也能打开看已缓存的搭配</li>
+          <li>代码结构稍复杂，AI 辅助可控</li>
+          <li>开发周期比路线 A 多 1-2 周</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>路线 C（不推荐）：微信小程序</h3>
+  <p>小程序在手机上体验最好，但开发环境封闭、审核流程长、与 AI 协作效率低。对于零基础 + AI 辅助的模式，前期不建议走这条路。产品化阶段可以再考虑。</p>
+</div>
+
+<div class="section">
+  <h3>我的推荐：路线 B</h3>
+  <p>理由：</p>
+  <ol style="font-size:14px; line-height:1.8;">
+    <li>女朋友把图标放手机桌面上，<strong>体验接近 App</strong></li>
+    <li>PWA 离线缓存很适合"出门前看一眼搭配"的场景</li>
+    <li>Next.js + PWA 的代码量跟纯 React SPA 差距不大，AI 能处理好</li>
+    <li>保留了产品化的技术底子（Next.js 生态更好扩展）</li>
+  </ol>
+</div>

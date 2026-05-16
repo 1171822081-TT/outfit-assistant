@@ -1,0 +1,129 @@
+<h2>第 3 节：页面与组件树</h2>
+<p class="subtitle">3 个 Tab 页面 + 共享组件</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">Tab 1：首页（推荐）</div>
+    <div class="mockup-body" style="padding:8px; text-align:left;">
+      <div style="background:#1a1a2e; color:#e0e0e0; padding:8px; border-radius:6px; font-size:12px; line-height:1.6;">
+        ┌──────────────────────┐<br>
+        │ WeatherCard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ ☁ 多云 22°~28°&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        ├──────────────────────┤<br>
+        │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │&nbsp;&nbsp;&nbsp;&nbsp;ModelViewer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │&nbsp;&nbsp;(Canvas 2D 模特)&nbsp;&nbsp;&nbsp;│<br>
+        │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[图层叠加展示]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        ├──────────────────────┤<br>
+        │ ◀ 搭配1 搭配2 搭配3 ▶ │<br>
+        │ [收藏] [换一批]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        └──────────────────────┘
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">Tab 2：衣柜</div>
+    <div class="mockup-body" style="padding:8px; text-align:left;">
+      <div style="background:#1a1a2e; color:#e0e0e0; padding:8px; border-radius:6px; font-size:12px; line-height:1.6;">
+        ┌──────────────────────┐<br>
+        │ CategoryTabs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ [全部][上衣][裤子]... │<br>
+        ├──────────────────────┤<br>
+        │ FilterBar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ [颜色▼][风格▼]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        ├──────────────────────┤<br>
+        │ ClothingGrid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ ┌──┐ ┌──┐ ┌──┐&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ │🧥│ │👗│ │👖│&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ └──┘ └──┘ └──┘&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ ┌──┐ ┌──┐ ┌──┐&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ │👠│ │👜│ │...│&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ └──┘ └──┘ └──┘&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        ├──────────────────────┤<br>
+        │ [+ 添加衣物]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        └──────────────────────┘
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:16px;">
+  <div class="mockup">
+    <div class="mockup-header">Tab 3：我的搭配</div>
+    <div class="mockup-body" style="padding:8px; text-align:left;">
+      <div style="background:#1a1a2e; color:#e0e0e0; padding:8px; border-radius:6px; font-size:12px; line-height:1.6; max-width:320px; margin:0 auto;">
+        ┌──────────────────────┐<br>
+        │ [收藏搭配] [搭配日历]&nbsp;&nbsp;│<br>
+        ├──────────────────────┤<br>
+        │ OutfitList&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ ┌──────────────┐&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ │ "通勤优雅" ★&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ │ 白衬衫+黑裤... │&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ └──────────────┘&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ ┌──────────────┐&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ │ "周末休闲"&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ │ 卫衣+牛仔裤... │&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        │ └──────────────┘&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+        └──────────────────────┘
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>组件树</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:16px; border-radius:8px; font-size:13px; font-family:monospace; line-height:1.7;">
+    App<br>
+    ├── TabBar (底部导航：推荐 | 衣柜 | 我的)<br>
+    ├── HomePage<br>
+    │&nbsp;&nbsp;&nbsp;├── WeatherCard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(天气信息条)<br>
+    │&nbsp;&nbsp;&nbsp;├── ModelViewer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Canvas 2D 模特)<br>
+    │&nbsp;&nbsp;&nbsp;├── OutfitSwitcher&nbsp;&nbsp;&nbsp;(左右切换搭配)<br>
+    │&nbsp;&nbsp;&nbsp;└── OutfitActions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(收藏/换一批/自由搭配)<br>
+    ├── WardrobePage<br>
+    │&nbsp;&nbsp;&nbsp;├── CategoryTabs&nbsp;&nbsp;&nbsp;&nbsp;(分类筛选栏)<br>
+    │&nbsp;&nbsp;&nbsp;├── FilterBar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(颜色/风格筛选)<br>
+    │&nbsp;&nbsp;&nbsp;├── ClothingGrid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(瀑布流卡片)<br>
+    │&nbsp;&nbsp;&nbsp;└── ClothingForm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(录入/编辑弹窗)<br>
+    ├── MyOutfitsPage<br>
+    │&nbsp;&nbsp;&nbsp;├── OutfitList&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(收藏+自搭列表)<br>
+    │&nbsp;&nbsp;&nbsp;├── OutfitCalendar&nbsp;&nbsp;&nbsp;(穿搭日历)<br>
+    │&nbsp;&nbsp;&nbsp;└── OutfitEditor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(自由搭配模式)<br>
+    └── 共享组件<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;├── ImageUploader&nbsp;&nbsp;&nbsp;(上传 + 触发抠图)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;├── LoadingState&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(骨架屏)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;└── EmptyState&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(空衣柜/无推荐提示)
+  </div>
+</div>
+
+<div class="section">
+  <h3>移动端布局策略</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:14px;">
+    <tr style="background:#1a1a2e; color:#e0e0e0;">
+      <th style="padding:10px; text-align:left;">要素</th>
+      <th style="padding:10px; text-align:left;">方案</th>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">宽度基准</td>
+      <td style="padding:10px;">max-width 480px，超出居中加背景色</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">底部导航</td>
+      <td style="padding:10px;">固定底部，3 个 Tab，图标+文字，高度 56px</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">衣柜网格</td>
+      <td style="padding:10px;">2 列卡片网格，图片在上属性在下</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">模特区域</td>
+      <td style="padding:10px;">占屏幕中间 60% 高度，Canvas 自适应</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">表单录入</td>
+      <td style="padding:10px;">全屏 Bottom Sheet，字段滚动，底部固定提交按钮</td>
+    </tr>
+  </table>
+</div>

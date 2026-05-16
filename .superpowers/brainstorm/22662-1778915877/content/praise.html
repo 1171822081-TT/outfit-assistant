@@ -1,0 +1,86 @@
+<h2>新增功能：首页夸赞横幅 PraiseBanner</h2>
+<p class="subtitle">打开 App 时随机展示一句细节化夸赞，30 字以内</p>
+
+<div class="section">
+  <h3>展示位置：首页顶部，天气卡片下方</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:12px; border-radius:8px; font-size:13px; font-family:monospace; line-height:1.8; max-width:340px; margin:0 auto;">
+    ┌──────────────────────────┐<br>
+    │ ☁ 多云 22°~28°&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+    ├──────────────────────────┤<br>
+    │ <span style="color:#fbbf24;">💬 锁骨线条真好看，</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+    │ <span style="color:#fbbf24;">&nbsp;&nbsp;&nbsp;穿露肩肯定很绝。</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;← 新增<br>
+    ├──────────────────────────┤<br>
+    │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+    │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ModelViewer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+    │&nbsp;&nbsp;[2D 模特展示]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+    │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+    └──────────────────────────┘
+  </div>
+</div>
+
+<div class="section">
+  <h3>夸赞文案设计</h3>
+  <p>核心原则：<strong>夸细节、夸选择、夸气质，不夸努力</strong></p>
+
+  <div style="background:#1e3a2f; padding:16px; border-radius:8px;">
+    <h4 style="color:#4ade80; margin-top:0;">文案示例</h4>
+    <ul style="font-size:14px; line-height:2;">
+      <li>"你挑衣服的眼光真的很独特"</li>
+      <li>"你肩颈线条很好看，穿什么都显气质"</li>
+      <li>"你笑起来眼睛弯弯的样子特别温柔"</li>
+      <li>"你走路带风的气场，简单穿搭都像街拍"</li>
+      <li>"你身上有一种让人很舒服的松弛感"</li>
+      <li>"你配色的感觉特别好，像天生就会穿搭"</li>
+    </ul>
+  </div>
+</div>
+
+<div class="section">
+  <h3>技术实现</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:14px;">
+    <tr style="background:#1a1a2e; color:#e0e0e0;">
+      <th style="padding:10px; text-align:left;">项</th>
+      <th style="padding:10px; text-align:left;">方案</th>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">数据存储</td>
+      <td style="padding:10px;">Supabase 新建 <code>compliments</code> 表，或前端 JSON 数组（更简单）</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">展示逻辑</td>
+      <td style="padding:10px;">每次打开首页随机选一条，同一天不重复（存在 localStorage）</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">更新频率</td>
+      <td style="padding:10px;">每天换一条。当天多次打开显示同一条（避免刷新刷出奇怪感）</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">文案来源</td>
+      <td style="padding:10px;">初期你手动录入 30-50 条。后续可考虑接入 AI 生成</td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>组件更新</h3>
+  <p><code>HomePage</code> 组件树增加一项：</p>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:12px; border-radius:8px; font-size:13px; font-family:monospace; line-height:1.7;">
+    HomePage<br>
+    ├── WeatherCard<br>
+    ├── <strong style="color:#fbbf24;">PraiseBanner</strong>&nbsp;&nbsp;&nbsp;← 新增<br>
+    ├── ModelViewer<br>
+    ├── OutfitSwitcher<br>
+    └── OutfitActions
+  </div>
+</div>
+
+<div style="margin-top:16px; padding:16px; background:#1e3a2f; border-radius:8px; font-size:14px;">
+  <p style="margin:0;"><strong>数据表（可选，也可以直接用前端 JSON）：</strong></p>
+  <div style="background:#0f1a14; padding:10px; border-radius:4px; margin-top:8px; font-family:monospace; font-size:12px;">
+    compliments<br>
+    ├── id (PK)<br>
+    ├── text (TEXT, 30字限制)<br>
+    ├── category (气质/长相/品味/性格)<br>
+    └── created_at
+  </div>
+</div>

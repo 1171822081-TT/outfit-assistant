@@ -1,0 +1,83 @@
+<h2>第 4 节：关键流程</h2>
+<p class="subtitle">推荐引擎 + 图片自动处理，两条核心链路</p>
+
+<div class="section">
+  <h3>流程一：搭配推荐引擎</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:16px; border-radius:8px; font-size:13px; line-height:1.8;">
+    <strong>输入：</strong>明日天气 + 衣柜所有衣物<br>
+    <strong>输出：</strong>3 套搭配，风格互不相同<br><br>
+
+    ① <strong>获取天气数据</strong><br>
+    &nbsp;&nbsp;&nbsp;调用和风天气 API → 拿到 [最高温, 最低温, 天气类型, 风力, 降水概率]<br><br>
+
+    ② <strong>筛选候选衣物</strong><br>
+    &nbsp;&nbsp;&nbsp;从衣柜过滤：衣物的 temp_min ≤ 明日最高温 AND 衣物的 temp_max ≥ 明日最低温<br>
+    &nbsp;&nbsp;&nbsp;下雨 → 鞋类排除凉鞋/布面鞋，外套排除无防水材质<br>
+    &nbsp;&nbsp;&nbsp;如果候选为空 → 放宽温度 ±3°C 再筛一次<br><br>
+
+    ③ <strong>按风格分组生成搭配</strong><br>
+    &nbsp;&nbsp;&nbsp;在每个风格组内，尝试组合成完整搭配（上衣+下装+鞋+外套）：<br>
+    &nbsp;&nbsp;&nbsp;- 颜色冲突检测：主色超过 3 个 → 降分<br>
+    &nbsp;&nbsp;&nbsp;- 风格一致性：同套搭配内各单品的 style 标签一致 → 加分<br>
+    &nbsp;&nbsp;&nbsp;- 厚薄一致：上衣和外套的厚度相差不超过一档 → 加分<br>
+    &nbsp;&nbsp;&nbsp;- 连衣裙路径：有连衣裙时跳过上衣+下装配对<br><br>
+
+    ④ <strong>选出 Top 3，风格差异化</strong><br>
+    &nbsp;&nbsp;&nbsp;按得分排序，取前 3，确保 style 不重复。<br>
+    &nbsp;&nbsp;&nbsp;若只剩 2 种风格 → 第 3 套用"随机搭配"补齐<br>
+    &nbsp;&nbsp;&nbsp;若只有 1 种风格 → 放宽风格约束，从其他风格混搭生成<br><br>
+
+    ⑤ <strong>返回结果</strong><br>
+    &nbsp;&nbsp;&nbsp;每套附带：搭配名称、衣物清单、风格标签、匹配得分
+  </div>
+</div>
+
+<div class="section" style="margin-top:20px;">
+  <h3>流程二：电商图片自动处理</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:16px; border-radius:8px; font-size:13px; line-height:1.8;">
+    <strong>输入：</strong>淘宝/电商商品图<br>
+    <strong>输出：</strong>去背景透明 PNG，可叠加到模特身上<br><br>
+
+    ① <strong>用户录入衣物</strong><br>
+    &nbsp;&nbsp;&nbsp;粘贴图片 URL 或上传文件 → 保存到 Supabase Storage → clothing.image_original<br>
+    &nbsp;&nbsp;&nbsp;同时创建 image_queue 记录 (status: pending)<br><br>
+
+    ② <strong>浏览器端 AI 抠图</strong><br>
+    &nbsp;&nbsp;&nbsp;使用 @imgly/background-removal，在 Web Worker 中运行（不卡主线程）<br>
+    &nbsp;&nbsp;&nbsp;处理中 → image_queue status = "processing"，前端显示进度条<br><br>
+
+    ③ <strong>处理完成</strong><br>
+    &nbsp;&nbsp;&nbsp;成功 → 透明 PNG 上传 Supabase Storage → clothing.image_naked<br>
+    &nbsp;&nbsp;&nbsp;失败 → image_queue status = "failed"，提示用户"图片背景太复杂，请换一张纯色背景的图"<br><br>
+
+    ④ <strong>手动兜底</strong><br>
+    &nbsp;&nbsp;&nbsp;图片处理失败的衣物在衣柜中标记"待处理"状态<br>
+    &nbsp;&nbsp;&nbsp;用户可手动上传已处理好的透明 PNG 替换
+  </div>
+</div>
+
+<div class="section">
+  <h3>降级策略：推荐引擎</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:14px;">
+    <tr style="background:#1a1a2e; color:#e0e0e0;">
+      <th style="padding:10px; text-align:left;">异常</th>
+      <th style="padding:10px; text-align:left;">降级方案</th>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">天气 API 失败</td>
+      <td style="padding:10px;">展示缓存的上次天气 + "天气数据可能不是最新"提示</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">温度匹配无结果</td>
+      <td style="padding:10px;">放宽温度 ±3°C 再筛；仍无结果则提示"该温度区间暂无合适衣物"</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">衣柜衣物太少 (&lt;5件)</td>
+      <td style="padding:10px;">能做几套做几套，不足 3 套的显示"先录入更多衣物吧"引导</td>
+    </tr>
+    <tr>
+      <td style="padding:10px;">风格不足 3 种</td>
+      <td style="padding:10px;">放宽风格约束，允许同风格不同单品组合出多套</td>
+    </tr>
+  </table>
+</div>

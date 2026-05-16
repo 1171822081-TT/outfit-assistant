@@ -1,0 +1,105 @@
+<h2>收藏夹 → 推荐反馈闭环</h2>
+<p class="subtitle">收藏不只是存起来，而是让系统越来越懂她</p>
+
+<div class="section">
+  <h3>反馈回路</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:20px; border-radius:8px; font-size:14px; line-height:2.2; text-align:center;">
+    她收藏搭配<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+    系统提取偏好信号（风格、颜色、品类、单品）<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+    偏好权重更新到 user_profile<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+    下次推荐时加权匹配<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+    推荐更合她口味 → 收藏更多 → 循环
+  </div>
+</div>
+
+<div class="section">
+  <h3>从收藏中学什么</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:13px;">
+    <tr style="background:#1a1a2e; color:#e0e0e0;">
+      <th style="padding:10px; text-align:left;">维度</th>
+      <th style="padding:10px; text-align:left;">学到的信号</th>
+      <th style="padding:10px; text-align:left;">如何影响推荐</th>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">风格偏好</td>
+      <td style="padding:10px; font-size:12px;">她收藏的搭配中"甜美"占了 60%</td>
+      <td style="padding:10px; font-size:12px;">甜美风格搭配的推荐权重 +20%</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">品类偏好</td>
+      <td style="padding:10px; font-size:12px;">她收藏的搭配 80% 含裙子，很少收藏裤子</td>
+      <td style="padding:10px; font-size:12px;">优先推荐含裙子的搭配</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">颜色偏好</td>
+      <td style="padding:10px; font-size:12px;">收藏的搭配中白色、粉色高频出现</td>
+      <td style="padding:10px; font-size:12px;">含白色/粉色单品的搭配加分</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">单品偏好</td>
+      <td style="padding:10px; font-size:12px;">某件白色衬衫被反复收藏在不同搭配中</td>
+      <td style="padding:10px; font-size:12px;">这件衬衫在搭配生成中优先出现</td>
+    </tr>
+    <tr>
+      <td style="padding:10px;">搭配模板</td>
+      <td style="padding:10px; font-size:12px;">她喜欢"衬衫+长裙+平底鞋"这种组合</td>
+      <td style="padding:10px; font-size:12px;">相似结构的搭配获得加成</td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>数据表更新</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:12px; border-radius:8px; font-size:13px; font-family:monospace; line-height:1.6;">
+    user_profile 表增加如下字段：<br><br>
+    ├── fav_style_counts&nbsp;&nbsp;&nbsp;JSONB&nbsp;&nbsp;{"casual": 3, "sweet": 8, "office": 2}<br>
+    ├── fav_category_counts&nbsp;JSONB&nbsp;&nbsp;{"dress": 10, "top": 15, "bottom": 5}<br>
+    ├── fav_color_counts&nbsp;&nbsp;&nbsp;JSONB&nbsp;&nbsp;{"white": 12, "pink": 7, "black": 3}<br>
+    ├── fav_clothing_ids&nbsp;&nbsp;&nbsp;INT[]&nbsp;&nbsp;IDs of frequently favorited clothing items<br>
+    └── fav_patterns&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JSONB&nbsp;&nbsp;[{"slots":["shirt","skirt","flats"],"count":5}]<br><br>
+
+    <span style="color:#888;">每次收藏/取消收藏时增量更新这些字段。</span><br>
+    <span style="color:#888;">不查 outfit 表计算，直接维护在 profile 里，推荐时瞬时读取。</span>
+  </div>
+</div>
+
+<div class="section">
+  <h3>推荐评分公式更新</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:16px; border-radius:8px; font-size:13px; line-height:1.8;">
+    <strong>之前：</strong>搭配得分 = 天气 × 0.5 + 风格偏好 × 0.3 + 通勤 × 0.2<br><br>
+    <strong>加入收藏反馈后：</strong><br><br>
+    搭配得分 = 天气 × 0.4 + 风格偏好 × 0.25 + 通勤 × 0.15 + <strong style="color:#fbbf24;">收藏偏好 × 0.2</strong><br><br>
+    <span style="color:#888;">收藏偏好分 = 风格命中率 × 品类命中率 × 颜色命中率 × 单品命中率 的加权和<br>
+    收藏越多 → 信号越强 → 推荐越准</span>
+  </div>
+</div>
+
+<div class="section">
+  <h3>冷启动 vs 有数据后</h3>
+  <div class="split">
+    <div class="mockup">
+      <div class="mockup-header">刚用几天（无收藏）</div>
+      <div class="mockup-body" style="padding:12px; font-size:14px;">
+        <p>收藏偏好权重 = 0</p>
+        <p style="color:#888;">纯靠天气 + 初始问卷推荐</p>
+        <p style="color:#888;">推荐质量：一般，偏通用</p>
+      </div>
+    </div>
+    <div class="mockup">
+      <div class="mockup-header">用了两周（收藏了 10+ 套）</div>
+      <div class="mockup-body" style="padding:12px; font-size:14px;">
+        <p>收藏偏好权重 = 0.2</p>
+        <p style="color:#4ade80;">推荐越来越合她口味</p>
+        <p style="color:#4ade80;">推荐质量：明显提升</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:16px; padding:16px; background:#1e3a2f; border-radius:8px; font-size:14px;">
+  <p style="margin:0;"><strong>一句话：</strong>收藏不止是书签，是系统越来越懂她的数据来源。收藏越多，推荐越准。</p>
+</div>

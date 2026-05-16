@@ -1,0 +1,114 @@
+<h2>第 5 节：错误处理与边界情况</h2>
+<p class="subtitle">所有可能出问题的地方，都有兜底</p>
+
+<div class="section">
+  <h3>网络异常</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:14px;">
+    <tr style="background:#1a1a2e; color:#e0e0e0;">
+      <th style="padding:10px; text-align:left;">场景</th>
+      <th style="padding:10px; text-align:left;">处理</th>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">天气 API 超时/失败</td>
+      <td style="padding:10px;">显示 localStorage 缓存的上次天气 + 黄色标签"天气不是最新的"</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">Supabase 连接失败</td>
+      <td style="padding:10px;">衣柜从 localStorage 读缓存，顶部红条提示"网络异常，数据可能不是最新"</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">图片上传失败</td>
+      <td style="padding:10px;">保留表单已填内容，图片区域显示"上传失败，点击重试"</td>
+    </tr>
+    <tr>
+      <td style="padding:10px;">全部 API 不可用</td>
+      <td style="padding:10px;">展示上次完整缓存的快照 + 提示"当前为离线模式"</td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>空状态</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:14px;">
+    <tr style="background:#1a1a2e; color:#e0e0e0;">
+      <th style="padding:10px; text-align:left;">页面</th>
+      <th style="padding:10px; text-align:left;">空状态</th>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">首页 — 无推荐</td>
+      <td style="padding:10px;">引导卡片："衣柜里还没有适合明天天气的衣物，去添加几件吧 →"</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">衣柜 — 空</td>
+      <td style="padding:10px;">插图 + "衣柜还是空的" + 大按钮"添加第一件衣物"</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">我的搭配 — 无收藏</td>
+      <td style="padding:10px;">"还没有收藏搭配，去首页看看推荐 →"</td>
+    </tr>
+    <tr>
+      <td style="padding:10px;">搭配日历 — 无记录</td>
+      <td style="padding:10px;">"今天还没记录穿搭，要记录吗？"</td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>加载状态</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:14px;">
+    <tr style="background:#1a1a2e; color:#e0e0e0;">
+      <th style="padding:10px; text-align:left;">场景</th>
+      <th style="padding:10px; text-align:left;">方案</th>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">首页首次加载</td>
+      <td style="padding:10px;">天气卡片 + 模特区域 骨架屏闪烁，完成后渐显</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">推荐生成中</td>
+      <td style="padding:10px;">模特区域显示"正在为你搭配..." + 脉冲动画</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">图片抠图中</td>
+      <td style="padding:10px;">进度条 + "正在处理图片..." 百分比</td>
+    </tr>
+    <tr>
+      <td style="padding:10px;">衣柜列表加载</td>
+      <td style="padding:10px;">6 个灰色卡片骨架屏占位</td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>边界情况</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:14px;">
+    <tr style="background:#1a1a2e; color:#e0e0e0;">
+      <th style="padding:10px; text-align:left;">边界</th>
+      <th style="padding:10px; text-align:left;">处理</th>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">衣柜只有 1-2 件</td>
+      <td style="padding:10px;">能做几套做几套，不硬凑 3 套，引导加衣物</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">全部衣物同一种风格</td>
+      <td style="padding:10px;">风格差异化的约束自动放宽，允许同风格不同单品</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">极端天气（高温/寒潮）</td>
+      <td style="padding:10px;">无匹配时放宽温度 ±5°C，再没有则提示"建议添置适合XX天气的衣物"</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">用户未完成问卷就退出</td>
+      <td style="padding:10px;">下次打开继续弹窗，提供"跳过"按钮，默认使用中性参数</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">图片抠图失败</td>
+      <td style="padding:10px;">标记"待处理"，衣柜中覆盖半透明遮罩，点击可重新处理或手动上传 PNG</td>
+    </tr>
+    <tr>
+      <td style="padding:10px;">同一天反复打开</td>
+      <td style="padding:10px;">天气和推荐结果用当天日期做 key 缓存，不重复调用 API</td>
+    </tr>
+  </table>
+</div>

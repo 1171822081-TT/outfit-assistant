@@ -1,0 +1,100 @@
+<h2>新增功能：首次使用自我描述</h2>
+<p class="subtitle">3 个问题 → 个性化推荐 + 夸赞也因人而异</p>
+
+<div class="section">
+  <h3>问卷设计（首次打开弹出）</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:20px; border-radius:8px; font-size:14px; line-height:2.2;">
+
+    <strong>Q1 — 你平时喜欢什么穿衣风格？</strong><br>
+    <span style="font-size:13px; color:#888;">最多选 2 个</span><br>
+    <span style="font-size:13px;">□ 休闲自在 &nbsp; □ 通勤干练 &nbsp; □ 运动活力</span><br>
+    <span style="font-size:13px;">□ 甜美可爱 &nbsp; □ 酷飒帅气 &nbsp; □ 温柔气质</span><br><br>
+
+    <strong>Q2 — 你的性格更接近？</strong><br>
+    <span style="font-size:13px; color:#888;">单选</span><br>
+    <span style="font-size:13px;">○ 开朗外向 &nbsp; ○ 安静内敛 &nbsp; ○ 自信独立 &nbsp; ○ 温柔细腻</span><br><br>
+
+    <strong>Q3 — 你平时怎么去上班/出门？</strong><br>
+    <span style="font-size:13px; color:#888;">单选</span><br>
+    <span style="font-size:13px;">○ 走路 &nbsp; ○ 骑车 &nbsp; ○ 公交/地铁 &nbsp; ○ 开车 &nbsp; ○ 居家不出门</span>
+  </div>
+</div>
+
+<div class="section">
+  <h3>问卷答案如何影响推荐</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:13px;">
+    <tr style="background:#1a1a2e; color:#e0e0e0;">
+      <th style="padding:10px; text-align:left;">维度</th>
+      <th style="padding:10px; text-align:left;">影响</th>
+      <th style="padding:10px; text-align:left;">示例</th>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">穿衣风格</td>
+      <td style="padding:10px;">推荐时该风格的搭配<strong>加 30% 权重</strong></td>
+      <td style="padding:10px; font-size:12px;">选了"通勤"→ 3套中至少 2 套偏通勤</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">性格</td>
+      <td style="padding:10px;">夸赞文案<strong>语气适配</strong></td>
+      <td style="padding:10px; font-size:12px;">开朗 → 活泼俏皮夸法<br>内敛 → 温柔含蓄夸法<br>自信 → 气场大女主夸法</td>
+    </tr>
+    <tr style="border-bottom:1px solid #333;">
+      <td style="padding:10px;">通勤方式</td>
+      <td style="padding:10px;">推荐时<strong>增加实用约束</strong></td>
+      <td style="padding:10px; font-size:12px;">骑车 → 不推荐裙子、凉鞋<br>走路 → 优先平底鞋/运动鞋<br>公交/地铁 → 推荐薄外套（温差）<br>开车 → 无特殊约束</td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>推荐引擎更新：加入个人画像</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:16px; border-radius:8px; font-size:13px; line-height:1.8;">
+    <strong>新的评分公式：</strong><br><br>
+    搭配得分 = 天气匹配分 × 0.5 + 风格偏好分 × 0.3 + 通勤适配分 × 0.2<br><br>
+
+    <span style="color:#888;">天气匹配分：温度区间命中、降水应对</span><br>
+    <span style="color:#888;">风格偏好分：搭配风格与用户偏好风格的重合度</span><br>
+    <span style="color:#888;">通勤适配分：衣物是否满足通勤方式的实用约束</span>
+  </div>
+</div>
+
+<div class="section">
+  <h3>数据表新增</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:12px; border-radius:8px; font-size:13px; font-family:monospace; line-height:1.6;">
+    user_profile&nbsp;&nbsp;<span style="color:#888;">← 新增</span><br>
+    ├── id (PK)<br>
+    ├── user_id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(预留，单用户暂时不用)<br>
+    ├── style_prefs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEXT[]&nbsp;&nbsp;{"office", "gentle"}<br>
+    ├── personality&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEXT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"outgoing"<br>
+    ├── commute&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TEXT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"subway"<br>
+    ├── onboarding_done&nbsp;BOOLEAN&nbsp;&nbsp;是否已完成问卷<br>
+    └── updated_at
+  </div>
+</div>
+
+<div class="section">
+  <h3>通勤约束规则</h3>
+  <table style="width:100%; border-collapse:collapse; font-size:13px;">
+    <tr style="background:#1a1a2e; color:#e0e0e0;">
+      <th style="padding:8px; text-align:left;">通勤方式</th>
+      <th style="padding:8px; text-align:left;">排除</th>
+      <th style="padding:8px; text-align:left;">优先</th>
+    </tr>
+    <tr style="border-bottom:1px solid #333;"><td style="padding:8px;">骑车</td><td style="padding:8px;">短裙、凉鞋、高跟鞋、长外套</td><td style="padding:8px;">裤装、运动鞋、短外套</td></tr>
+    <tr style="border-bottom:1px solid #333;"><td style="padding:8px;">走路</td><td style="padding:8px;">高跟鞋、厚底鞋</td><td style="padding:8px;">平底鞋、运动鞋、帆布鞋</td></tr>
+    <tr style="border-bottom:1px solid #333;"><td style="padding:8px;">公交/地铁</td><td style="padding:8px;">—</td><td style="padding:8px;">薄外套（应对车厢内外温差）</td></tr>
+    <tr style="border-bottom:1px solid #333;"><td style="padding:8px;">开车</td><td style="padding:8px;">—</td><td style="padding:8px;">无特殊约束</td></tr>
+    <tr><td style="padding:8px;">居家</td><td style="padding:8px;">—</td><td style="padding:8px;">舒适面料，不推荐外套</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h3>夸赞也因人而异</h3>
+  <div style="background:#1a1a2e; color:#e0e0e0; padding:12px; border-radius:8px; font-size:13px; line-height:1.8;">
+    compliments 表加一个字段：<br><br>
+    <code>personality_tags&nbsp;&nbsp;TEXT[]</code>&nbsp;&nbsp;适配的性格类型<br><br>
+    筛选时多加一层过滤：<br>
+    搭配标签匹配 → 性格标签匹配 → 近期不重复 → 随机选<br><br>
+    <span style="color:#888;">效果：同样是通勤搭配，开朗型看到"这一身气场直接拉满！"，内敛型看到"今天安静而笃定的样子，很动人"</span>
+  </div>
+</div>
