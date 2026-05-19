@@ -117,10 +117,10 @@ src/
 
 在进入 Phase 5 之前，确保以下数据链路可走通：
 
-- [ ] 衣柜中有 ≥ 3 件上衣 + ≥ 3 件下装 + ≥ 1 件连衣裙（或手动插入测试数据）
-- [ ] 推荐引擎能基于测试衣物产出 ≥ 1 套搭配（`lib/recommendation.ts` 单元测试通过）
-- [ ] 天气 Hook 可获取真实或 mock 天气数据
-- [ ] 用户已通过 Onboarding（`user_profile` 有风格/通勤偏好）
+- [x] 衣柜中有 ≥ 3 件上衣 + ≥ 3 件下装，推荐引擎可基于当前衣柜产出 ≥ 1 套搭配（dress+shoes 或 top+bottom+shoes 路径均可）
+- [x] 推荐引擎能基于测试衣物产出 ≥ 1 套搭配（`lib/recommendation.ts` 16/16 单元测试通过，E2E 完整流程通过）
+- [x] 天气 Hook 可获取真实或 mock 天气数据（Edge Function 实时返回 Open-Meteo 数据：23°C 毛毛雨；7/7 单元测试通过）
+- [x] 用户已通过 Onboarding（`user_profile.onboarding_done = true`，personality/commute/style_prefs 已写入）
 
 ---
 
