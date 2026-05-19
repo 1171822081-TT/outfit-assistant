@@ -1,0 +1,27 @@
+# Supabase local development configuration
+# Generated manually — run `supabase start` when network allows
+
+project_id = "kllcolzlvwatdrswriyh"
+
+[api]
+port = 54321
+
+[db]
+port = 54322
+
+[studio]
+port = 54323
+
+[inbucket]
+port = 54324
+
+[storage]
+
+[auth]
+enable_signup = true
+
+# Custom SMS provider (reserved for future SMS OTP)
+# [auth.hook.send_sms]
+# enabled = true
+# uri = "https://kllcolzlvwatdrswriyh.supabase.co/functions/v1/send-sms"
+# secrets = "env(SEND_SMS_HOOK_SECRET)"

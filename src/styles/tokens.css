@@ -1,0 +1,48 @@
+:root {
+  --color-surface: oklch(98% 0.002 260);
+  --color-surface-alt: oklch(95% 0.004 260);
+  --color-text: oklch(18% 0 0);
+  --color-text-secondary: oklch(50% 0.01 260);
+  --color-accent: oklch(62% 0.18 15);
+  --color-accent-secondary: oklch(72% 0.12 280);
+  --color-success: oklch(60% 0.17 160);
+  --color-warning: oklch(70% 0.16 85);
+  --color-danger: oklch(55% 0.2 25);
+  --color-border: oklch(88% 0.005 260);
+
+  --text-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+  --text-sm: clamp(0.8125rem, 0.78rem + 0.15vw, 0.875rem);
+  --text-base: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
+  --text-lg: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.75rem);
+  --text-hero: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-section: clamp(3rem, 2rem + 5vw, 6rem);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-surface: oklch(16% 0.005 260);
+    --color-surface-alt: oklch(22% 0.008 260);
+    --color-text: oklch(92% 0.002 260);
+    --color-text-secondary: oklch(65% 0.01 260);
+    --color-accent: oklch(65% 0.18 15);
+    --color-accent-secondary: oklch(70% 0.13 280);
+    --color-border: oklch(28% 0.01 260);
+  }
+}
