@@ -96,7 +96,7 @@ export default function HomePage() {
         const { data: profile } = await supabase
           .from('user_profile')
           .select('style_prefs, commute, fav_style_counts, fav_category_counts')
-          .eq('user_id', user?.id)
+          .eq('user_id', user!.id)
           .single()
 
         const result = recommend(wardrobeItems, weather, {
@@ -169,7 +169,7 @@ export default function HomePage() {
       const { data: profile } = await supabase
         .from('user_profile')
         .select('style_prefs, commute, fav_style_counts, fav_category_counts')
-        .eq('user_id', user?.id)
+        .eq('user_id', user!.id)
         .single()
 
       const result = recommend(wardrobeItems, weather, {

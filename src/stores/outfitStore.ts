@@ -220,7 +220,7 @@ export const useOutfitStore = create<OutfitState>((set, get) => ({
         .insert({
           name,
           is_recommended: true,
-          weather_condition: weather as unknown as Record<string, unknown>,
+          weather_condition: weather as unknown as import('@/lib/database.types').Json,
           is_favorite: false,
           style: candidate.dress?.style ?? candidate.top?.style ?? null,
           user_id: user.id,

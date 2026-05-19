@@ -100,8 +100,8 @@ describe('useAuthStore', () => {
   it('signOut clears session and user', async () => {
     const useAuthStore = await getStore()
     // Set initial user state
-    const mockUser = { id: 'u1' }
-    const mockSession = { access_token: 'token', user: mockUser }
+    const mockUser = { id: 'u1', app_metadata: {}, user_metadata: {}, aud: 'authenticated', created_at: '2025-01-01' } as any
+    const mockSession = { access_token: 'token', refresh_token: 'rt', expires_in: 3600, token_type: 'bearer', user: mockUser } as any
     useAuthStore.setState({ user: mockUser, session: mockSession, isNewUser: true })
 
     mockSignOut.mockResolvedValueOnce(undefined)

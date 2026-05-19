@@ -56,9 +56,9 @@ export default function OnboardingPage() {
     const { error } = await supabase.from('user_profile').upsert({
       user_id: user.id,
       phone: phone.replace(/\s/g, '') || null,
-      personality,
+      personality: personality ?? undefined,
       style_prefs: styles,
-      commute,
+      commute: commute ?? undefined,
       onboarding_done: true,
     })
     setIsSaving(false)
