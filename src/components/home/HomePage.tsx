@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from 'react'
-import type { OutfitWithItems, Compliment, Personality } from '@/lib/types'
+import type { OutfitWithItems, Compliment, Personality, Style, Commute } from '@/lib/types'
 import { useWeather } from '@/hooks/useWeather'
 import { useOutfitStore } from '@/stores/outfitStore'
 import { useWardrobeStore } from '@/stores/wardrobeStore'
@@ -100,8 +100,8 @@ export default function HomePage() {
           .single()
 
         const result = recommend(wardrobeItems, weather, {
-          style_prefs: (profile?.style_prefs as string[]) ?? [],
-          commute: profile?.commute ?? 'walk',
+          style_prefs: (profile?.style_prefs as Style[]) ?? [],
+          commute: (profile?.commute as Commute) ?? 'walk',
           fav_style_counts: (profile?.fav_style_counts as Record<string, number>) ?? {},
           fav_category_counts: (profile?.fav_category_counts as Record<string, number>) ?? {},
         })
@@ -173,8 +173,8 @@ export default function HomePage() {
         .single()
 
       const result = recommend(wardrobeItems, weather, {
-        style_prefs: (profile?.style_prefs as string[]) ?? [],
-        commute: profile?.commute ?? 'walk',
+        style_prefs: (profile?.style_prefs as Style[]) ?? [],
+        commute: (profile?.commute as Commute) ?? 'walk',
         fav_style_counts: (profile?.fav_style_counts as Record<string, number>) ?? {},
         fav_category_counts: (profile?.fav_category_counts as Record<string, number>) ?? {},
       })

@@ -152,7 +152,7 @@ export const useOutfitStore = create<OutfitState>((set, get) => ({
 
     const { data: inserted, error } = await supabase
       .from('diary')
-      .insert({ ...diary, user_id: user.id })
+      .insert({ ...diary, user_id: user.id } as any)
       .select()
       .single()
 
@@ -166,7 +166,7 @@ export const useOutfitStore = create<OutfitState>((set, get) => ({
   updateDiary: async (id, diary) => {
     const { data: updated, error } = await supabase
       .from('diary')
-      .update(diary)
+      .update(diary as any)
       .eq('id', id)
       .select()
       .single()
@@ -220,7 +220,7 @@ export const useOutfitStore = create<OutfitState>((set, get) => ({
         .insert({
           name,
           is_recommended: true,
-          weather_condition: weather,
+          weather_condition: weather as unknown as Record<string, unknown>,
           is_favorite: false,
           style: candidate.dress?.style ?? candidate.top?.style ?? null,
           user_id: user.id,

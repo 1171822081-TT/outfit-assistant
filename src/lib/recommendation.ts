@@ -1,5 +1,5 @@
 import type { Clothing, WeatherData, UserProfile, Category, Commute } from './types'
-import { COMMUTE_RULES, SCORING_WEIGHTS, COLD_START_THRESHOLD, MATURE_THRESHOLD, NEUTRAL_COLORS, RAIN_EXCLUDE_KEYWORDS } from './constants'
+import { COMMUTE_RULES, SCORING_WEIGHTS, COLD_START_THRESHOLD, MATURE_THRESHOLD, RAIN_EXCLUDE_KEYWORDS } from './constants'
 
 export interface OutfitCandidate {
   top?: Clothing

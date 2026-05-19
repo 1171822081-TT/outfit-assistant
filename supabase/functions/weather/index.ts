@@ -6,6 +6,34 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+const RATE_LIMIT_MAX = 10
+const RATE_LIMIT_WINDOW_MS = 60_000
+const rateLimitMap = new Map<string, number[]>()
+
+function checkRateLimit(ip: string): { allowed: boolean; retryAfter: number } {
+  const now = Date.now()
+  const windowStart = now - RATE_LIMIT_WINDOW_MS
+
+  let timestamps = rateLimitMap.get(ip)
+  if (!timestamps) {
+    timestamps = []
+    rateLimitMap.set(ip, timestamps)
+  }
+
+  // Prune expired entries
+  const recent = timestamps.filter((t) => t > windowStart)
+  rateLimitMap.set(ip, recent)
+
+  if (recent.length >= RATE_LIMIT_MAX) {
+    const oldest = recent[0]
+    const retryAfter = Math.ceil((oldest + RATE_LIMIT_WINDOW_MS - now) / 1000)
+    return { allowed: false, retryAfter }
+  }
+
+  recent.push(now)
+  return { allowed: true, retryAfter: 0 }
+}
+
 interface WeatherResponse {
   temp_high: number
   temp_low: number
@@ -25,6 +53,23 @@ serve(async (req: Request) => {
     return new Response(
       JSON.stringify({ success: false, error: '请使用 POST 请求' }),
       { status: 405, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } }
+    )
+  }
+
+  const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+    req.headers.get('x-real-ip') ?? 'unknown'
+  const { allowed, retryAfter } = checkRateLimit(clientIp)
+  if (!allowed) {
+    return new Response(
+      JSON.stringify({ success: false, error: '请求过于频繁，请稍后再试' }),
+      {
+        status: 429,
+        headers: {
+          ...CORS_HEADERS,
+          'Content-Type': 'application/json',
+          'Retry-After': String(retryAfter),
+        },
+      },
     )
   }
 
@@ -98,6 +143,9 @@ async function fetchOpenMeteo(lat: number, lon: number): Promise<WeatherResponse
   ].join('')
 
   const res = await fetch(url)
+  if (!res.ok) {
+    throw new Error(`Open-Meteo API returned ${res.status}`)
+  }
   const json = await res.json()
   const daily = json.daily
 

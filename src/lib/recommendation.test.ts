@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest'
 import { recommend } from './recommendation'
-import type { OutfitCandidate } from './recommendation'
 import type { Clothing, WeatherData, UserProfile } from './types'
 
 function makeItem(overrides: Partial<Clothing> = {}): Clothing {

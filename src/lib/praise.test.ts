@@ -137,7 +137,7 @@ describe('matchPraise', () => {
       makeItem({ subcategory: '吊带', name: '蕾丝吊带', style: 'sweet' }),
     ]
     const personality: Personality = 'gentle'
-    const compliments = [
+    const compliments: Compliment[] = [
       {
         id: 'test1',
         text: '蕾丝和吊带太美了！',
