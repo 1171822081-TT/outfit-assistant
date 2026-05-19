@@ -5,3 +5,4 @@ dist/
 .claude/
 *.tsbuildinfo
 .DS_Store
+test-results/
